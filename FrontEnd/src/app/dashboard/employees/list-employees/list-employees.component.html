@@ -1,0 +1,131 @@
+<div class="flex">
+    <app-sidebar></app-sidebar>
+
+    <div class="w-full flex h-screen overflow-y-hidden bg-white">
+
+        <div class="flex flex-col flex-1 h-full overflow-hidden">
+
+            <main class="flex-1 max-h-full p-5 overflow-hidden overflow-y-scroll">
+
+                <div class="flex mb-4">
+                    <h3 class="text-xl flex-grow">Empleados</h3>
+                    <a href="/dashboard/create-employee" class="text-xl text-blue-500 mr-4 hover:text-gray-800"><i class="fa-solid fa-plus mr-2"></i>Registrar empleado</a>
+                </div>
+
+                <hr />
+
+                <!-- FILTER SECTION -->
+                <div class="bg-white pt-10 pb-4">
+                    <div class="grid lg:grid-cols-5 gap-4">
+                        <div class="border focus-within:border-blue-500 transition-all duration-500 relative rounded p-1">
+                            <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                                <p>
+                                    <label for="status_vaccine" class="bg-white text-gray-600">Estado de vacunación</label>
+                                </p>
+                            </div>
+                            <p>
+                                <select id="status_vaccine" name="status_vaccine" [(ngModel)]="dataFilter.status_vaccine" tabindex="0" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
+                                    <option value="">- Seleccione -</option>
+                                    <option value="on">Vacunado</option>
+                                    <option value="off">No Vacunado</option>
+                                </select>
+                            </p>
+                        </div>
+                        <div class="border focus-within:border-blue-500 transition-all duration-500 relative rounded p-1">
+                            <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                                <p>
+                                    <label for="type_vaccine" class="bg-white text-gray-600">Tipo de vacuna</label>
+                                </p>
+                            </div>
+                            <p>
+                                <select id="type_vaccine" name="type_vaccine" [(ngModel)]="dataFilter.type_vaccine" tabindex="0" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
+                                    <option value="">- Seleccione -</option>
+                                    <option value="Sputnik">Sputnik</option>
+                                    <option value="AstraZeneca">AstraZeneca</option>
+                                    <option value="Pfizer">Pfizer</option>
+                                    <option value="Jhonson&Jhonson">Jhonson&Jhonson</option>
+                                </select>
+                            </p>
+                        </div>
+                        <div class="border focus-within:border-blue-500 transition-all duration-500 relative rounded p-1">
+                            <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                                <p>
+                                    <label for="start_date" class="bg-white text-gray-600">Fecha desde</label>
+                                </p>
+                            </div>
+                            <p>
+                                <input id="start_date" name="start_date" [(ngModel)]="dataFilter.start_date" autocomplete="false" tabindex="0" type="date"
+                                    class="py-1 px-1 outline-none block h-full w-full">
+                            </p>
+                        </div>
+                        <div class="border focus-within:border-blue-500 transition-all duration-500 relative rounded p-1">
+                            <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                                <p>
+                                    <label for="end_date" class="bg-white text-gray-600">Hasta</label>
+                                </p>
+                            </div>
+                            <p>
+                                <input id="end_date" name="end_date" [(ngModel)]="dataFilter.end_date" autocomplete="false" tabindex="0" type="date"
+                                    class="py-1 px-1 outline-none block h-full w-full">
+                            </p>
+                        </div>
+                        <div class="mt-1">
+                            <button (click)="getEmployeesByParams()" class="rounded text-white px-3 py-1 bg-blue-500 hover:shadow-inner hover:bg-blue-700 transition-all duration-500">Filtrar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- END FILTER SECTION -->
+
+                <div class="flex flex-col mt-6">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <div class="overflow-hidden border-b border-gray-200 rounded-md shadow-md">
+                                <table class="min-w-full overflow-x-scroll divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-xs text-left text-gray-500">
+                                                Cédula
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-xs text-left text-gray-500">
+                                                Nombres
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-xs text-left text-gray-500">
+                                                Apellidos
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-xs text-left text-gray-500">
+                                                Correo electrónico
+                                            </th>
+                                            <th scope="col" class="relative px-6 py-3">
+                                                <span class="sr-only">Acciones</span>
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+
+                                        <tr *ngFor="let employee of employees" class="transition-all hover:bg-gray-100 hover:shadow-lg">
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ employee.dni }}</td>
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ employee.names }}</td>
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ employee.last_names }}</td>
+                                            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ employee.email }}</td>
+                                            <td class="px-6 py-4 text-sm font-medium text-center">
+                                                <button *ngIf="employee.status_employee == false" (click)="checkEmployee(employee._id)" class="text-green-500 mr-4"><i class="fa-solid fa-check"></i></button>
+                                                <a href="dashboard/update-employee/{{ employee._id }}" class="text-blue-500 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                <button (click)="removeEmployee(employee._id)" class="text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+
+    </div>
+</div>
