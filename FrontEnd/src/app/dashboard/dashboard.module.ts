@@ -8,6 +8,7 @@ import { ListEmployeesComponent } from "./employees/list-employees/list-employee
 import { CreateEmployeeComponent } from "./employees/create-employee/create-employee.component";
 import { UpdateEmployeeComponent } from './employees/update-employee/update-employee.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UpdateProfileComponent } from './profile/update-profile/update-profile.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ProfileComponent } from './profile/profile.component';
     CreateEmployeeComponent,
     UpdateEmployeeComponent,
     ProfileComponent,
+    UpdateProfileComponent,
   ],
   imports: [
     CommonModule,

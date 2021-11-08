@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { RelationUserEmployeeService } from "src/app/services/relation-user-employee.service";
 import { EmployeesService } from "src/app/services/employees.service";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-profile",
@@ -14,7 +15,8 @@ export class ProfileComponent implements OnInit {
   dataSingleEmployee: any = [];
   constructor(
     private relationUserEmployeeService: RelationUserEmployeeService,
-    private employeesService: EmployeesService
+    private employeesService: EmployeesService,
+    private datePipe: DatePipe
   ) {
     this.dataUserLogin = JSON.parse(sessionStorage.getItem("USER_DATA")!);
   }
@@ -31,8 +33,10 @@ export class ProfileComponent implements OnInit {
       .subscribe((res: any) => {
         this.employeesService.getEmployeeById(res.data.id_employee).subscribe(
           (res: any) => {
-            console.log(res);
             this.dataSingleEmployee = res.data;
+            if (this.dataSingleEmployee.date_vaccine !== "") {
+              this.dataSingleEmployee.date_vaccine = this.datePipe.transform(this.dataSingleEmployee.date_vaccine, 'yyyy-MM-dd');
+            }
           },
           (err: any) => console.error(err)
         );
